@@ -1,31 +1,31 @@
 package Model;
 
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.keyboard.NativeKeyListener;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.nio.file.Files;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+import org.jnativehook.mouse.NativeMouseEvent;
+import org.jnativehook.mouse.NativeMouseListener;
 
-public class KeyboardListener implements NativeKeyListener {
+public class KeyboardListener implements NativeKeyListener, NativeMouseListener
+{
 
-    OutputStream out = new ByteArrayOutputStream();
+    OutputStream out;
 
-    public void nativeKeyPressed(NativeKeyEvent e) {
+    public KeyboardListener()
+    {
+        out = new ByteArrayOutputStream();
+    }
+
+    public void nativeKeyPressed(NativeKeyEvent e)
+    {
         System.setOut(new PrintStream(out));
         String in = NativeKeyEvent.getKeyText(e.getKeyCode());
         if (in.length() > 1) {
-            if (in.toLowerCase().equals("backspace")) {
+            if (in.equals("Backspace")) {
                 System.out.print("\b");
-            } else if (in.toLowerCase().equals("space")) {
+            } else if (in.equals("Space") || in.equals("Enter")) {
                 System.out.print(" ");
             }
         } else {
@@ -35,14 +35,17 @@ public class KeyboardListener implements NativeKeyListener {
 //        System.err.print(out.toString());
     }
 
-    public void nativeKeyReleased(NativeKeyEvent e) {
+    public void nativeMousePressed(NativeMouseEvent e)
+    {
+        clearOutput();
     }
 
-    public void nativeKeyTyped(NativeKeyEvent e) {
-    }
+    public String getOutput() { return out.toString(); }
+    public void clearOutput() { out = new ByteArrayOutputStream(); }
 
-    public String getOutStream() {
-        return out.toString();
-    }
-
+    // empty methods
+    public void nativeKeyReleased(NativeKeyEvent e) {}
+    public void nativeKeyTyped(NativeKeyEvent e) {}
+    public void nativeMouseReleased(NativeMouseEvent e) {}
+    public void nativeMouseClicked(NativeMouseEvent e) {}
 }

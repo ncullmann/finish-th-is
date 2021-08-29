@@ -1,21 +1,19 @@
 package Controller;
 
-public class WordNode implements Comparable<WordNode> {
+public class WordNode implements Comparable<WordNode>
+{
     private String word;
     private int frequency;
 
-    public WordNode(String word) {
+    public WordNode(String word)
+    {
         this.word = word;
         frequency = 0;
     }
 
-//    public WordNode(String word, int frequency) {
-//        this.word = word;
-//        this.frequency = frequency;
-//    }
-
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(Object other)
+    {
         if (!(other instanceof WordNode)) {
             return false;
         }
@@ -24,23 +22,22 @@ public class WordNode implements Comparable<WordNode> {
     }
 
     @Override
-    public int hashCode() {
-        return word.hashCode();
-    }
+    public int hashCode() { return word.hashCode(); }
 
     @Override
-    public int compareTo(WordNode other) {
-        int x = -Integer.compare(frequency, other.getFrequency());
+    public int compareTo(WordNode other)
+    {
+        // sort descending
+        int i = -Integer.compare(frequency, other.getFrequency());
         if (word.equals(other.getWord())) {
             return 0;
         }
-        return x == 0 ? -1 : x;
+        // allow duplicate word frequencies
+        return i == 0 ? -1 : i;
     }
 
     @Override
-    public String toString() {
-        return word + ": " + frequency;
-    }
+    public String toString() { return word + ": " + frequency; }
 
     public String getWord() { return word; }
     public int getFrequency() { return frequency; }
