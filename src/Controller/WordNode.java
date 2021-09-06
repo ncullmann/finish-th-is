@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.Objects;
+
 public class WordNode implements Comparable<WordNode>
 {
     private String word;
@@ -12,17 +14,18 @@ public class WordNode implements Comparable<WordNode>
     }
 
     @Override
-    public boolean equals(Object other)
-    {
-        if (!(other instanceof WordNode)) {
-            return false;
-        }
-        WordNode otherNode = (WordNode) other;
-        return word.equals(otherNode.getWord());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WordNode wordNode = (WordNode) o;
+        return frequency == wordNode.frequency &&
+                word.equals(wordNode.word);
     }
 
     @Override
-    public int hashCode() { return word.hashCode(); }
+    public int hashCode() {
+        return Objects.hash(word, frequency);
+    }
 
     @Override
     public int compareTo(WordNode other)
