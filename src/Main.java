@@ -22,7 +22,7 @@ public class Main
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.WARNING);
         logger.setUseParentHandlers(false);
-//        Application.launch(View.class);
+        Application.launch(View.class);
 
         WordPredictor wordPredictor = new WordPredictor();
         String lastCharacter = "";
@@ -45,7 +45,7 @@ public class Main
             if (sentence.length > 1 && !wasIndexed) {
                 System.err.println(kb.getOutput());
                 System.err.println("Word to predict for: " + sentence[sentence.length-1]);
-                System.err.println("Predicted words: " + wordPredictor.getPredictedWords(sentence[sentence.length-1]));
+                System.err.println("Partial word prediction: " + wordPredictor.availableWords(sentence[sentence.length-1]));
             }
 
             Thread.sleep(10);

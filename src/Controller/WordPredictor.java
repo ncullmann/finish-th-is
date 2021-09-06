@@ -1,16 +1,13 @@
 package Controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class WordPredictor
 {
 
-    private Map<String, WordNode> nodes;
-    private Map<String, TreeSet<WordNode>> wordMap;
+    private Map<String, Set<WordNode>> wordMap;
+    private Map<Map<String, String>, WordNode> nodes;
 
     public WordPredictor()
     {
@@ -18,57 +15,44 @@ public class WordPredictor
         nodes = new HashMap<>();
     }
 
-    public TreeSet<WordNode> getPredictedWords(String typedWord)
-    {
-        typedWord = filterWord(typedWord);
-        if (wordMap.containsKey(typedWord)) {
-            return wordMap.get(typedWord);
+    public List<String> availableWords(String typedWord) {
+        String s = filterWord(typedWord);
+        if (wordMap.containsKey(s)) {
+            Iterator<WordNode> it = wordMap.get(s).iterator();
+            List<String> topWords = new ArrayList<>();
+            int i = 0;
+            while (it.hasNext() && i < 3) {
+                topWords.add(it.next().getWord());
+                i++;
+            }
+            return topWords;
         }
-        return new TreeSet<>();
+        return wordMap.keySet().stream().filter(word -> word.startsWith(s)).toList();
     }
 
-    public List<String> availableWords(String partialWord) {
-        return nodes.keySet().stream().filter(word -> word.contains(partialWord)).toList();
-    }
-
-    public void putWord(String firstWord, String secondWord)
-    {
+    public void putWord(String firstWord, String secondWord) {
         firstWord = filterWord(firstWord);
         secondWord = filterWord(secondWord);
-        TreeSet<WordNode> set;
 
         if (wordMap.containsKey(firstWord)) {
-            WordNode followingNode;
-            if (nodes.containsKey(secondWord)) {
-                followingNode = nodes.get(secondWord);
+            Map<String, String> nodeKey = Map.of(firstWord, secondWord);
+            WordNode node;
+            if (nodes.containsKey(nodeKey)) {
+                node = nodes.get(nodeKey);
+                wordMap.get(firstWord).remove(node);
+                node.incrementFrequency();
+            } else {
+                node = new WordNode(secondWord);
             }
-            else {
-                followingNode = new WordNode(secondWord);
-                nodes.put(firstWord, followingNode);
-            }
-
-            set = wordMap.get(firstWord);
-            if (set.contains(followingNode)) {
-                nodes.remove(secondWord);
-                set.remove(followingNode);
-                followingNode.incrementFrequency();
-                nodes.put(secondWord, followingNode);
-                set.add(followingNode);
-            }
-            else {
-                WordNode newNode = new WordNode(secondWord);
-                nodes.put(secondWord, newNode);
-                set.add(newNode);
-            }
+            wordMap.get(firstWord).add(node);
+            nodes.put(Map.of(firstWord, secondWord), node);
+        } else {
+            WordNode node = new WordNode(secondWord);
+            TreeSet<WordNode> set = new TreeSet<>();
+            set.add(node);
+            wordMap.put(firstWord, set);
+            nodes.put(Map.of(firstWord, secondWord), node);
         }
-        else {
-            set = new TreeSet<>();
-            WordNode newNode = new WordNode(secondWord);
-            nodes.put(firstWord, newNode);
-            set.add(newNode);
-        }
-
-        wordMap.put(firstWord, set);
     }
 
     private String filterWord(String word)
