@@ -25,7 +25,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
 
     public void nativeKeyPressed(NativeKeyEvent e) {
         System.setOut(new PrintStream(out));
-        var in = NativeKeyEvent.getKeyText(e.getKeyCode());
+        String in = NativeKeyEvent.getKeyText(e.getKeyCode());
         if (in.length() > 1) {
             if (in.equals("Backspace")) {
                 System.out.print("\b");
@@ -42,6 +42,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
                 }
             } catch (Exception awtException) {
                 awtException.getCause();
+                System.out.println(in);
             }
         }
         // debug

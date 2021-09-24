@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 public class PredictionEngine {
@@ -18,17 +22,16 @@ public class PredictionEngine {
     }
 
     public List<String> availableWords(String typedWord) {
-        var s = filterWord(typedWord);
         topAvailableWords = new ArrayList<>();
-        if (predictionMap.containsKey(s)) {
-            var it = predictionMap.get(s).iterator();
+        if (predictionMap.containsKey(typedWord)) {
+            var it = predictionMap.get(typedWord).iterator();
             var i = 0;
             while (it.hasNext() && i < 3) {
                 topAvailableWords.add(it.next().getWord());
                 i++;
             }
         } else {
-            topAvailableWords = predictionMap.keySet().stream().filter(word -> word.startsWith(s)).toList();
+            topAvailableWords = predictionMap.keySet().stream().filter(word -> word.startsWith(typedWord)).toList();
         }
         return topAvailableWords;
     }
@@ -37,9 +40,9 @@ public class PredictionEngine {
         return topAvailableWords;
     }
 
-    public void feed(String firstWord, String secondWord) {
-        firstWord = filterWord(firstWord);
-        secondWord = filterWord(secondWord);
+    public void train(String firstWord, String secondWord) {
+//        firstWord = filterWord(firstWord);
+//        secondWord = filterWord(secondWord);
 
         if (predictionMap.containsKey(firstWord)) {
             var nodeKey = Map.of(firstWord, secondWord);
@@ -54,7 +57,6 @@ public class PredictionEngine {
             }
             predictionMap.get(firstWord).add(node);
             stringToNode.put(Map.of(firstWord, secondWord), node);
-
         } else {
             var node = new WordNode(secondWord);
             TreeSet<WordNode> set = new TreeSet<>();
@@ -64,13 +66,8 @@ public class PredictionEngine {
         }
     }
 
-    private String filterWord(String word) {
-        return word.toLowerCase().trim().replaceAll("\\p{Punct}", "");
-    }
 
     public String toString() {
-        return //"Nodes: " + nodes.toString() + "\n" +
-                "WordMap: " + predictionMap.toString() + "\n";
+        return "WordMap: " + predictionMap.toString() + "\n";
     }
-
 }

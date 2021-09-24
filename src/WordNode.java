@@ -36,7 +36,7 @@ public class WordNode implements Comparable<WordNode> {
 
     @Override
     public String toString() {
-        return WORD + ": " + frequency;
+        return WORD + ": " + frequency + "\n";
     }
 
     public String getWord() {
