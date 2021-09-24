@@ -1,15 +1,19 @@
 .root {
     -fx-font-size: 12pt;
-    -fx-base: #2d2e2e;
-    -fx-background: #222222;
+    /*-fx-base: #2d2e2e;*/
+    /*-fx-background: #222222;*/
+    -fx-base: #eeeeee;
+    -fx-background-color: #eeeeee;
     -fx-padding: 5px;
     -fx-alignment: center;
 }
 
 .label {
-    -fx-text-fill: #fbfbfb;
-    -fx-border-color: #333333;
-    -fx-background-color: #333333;
+    /*-fx-text-fill: #fbfbfb;*/
+    -fx-text-fill: #111111;
+    /*-fx-border-color: #333333;*/
+    /*-fx-background-color: #333333;*/
+    -fx-background-color: #dddddd;
     -fx-padding: 10 32 10 32;
     -fx-border-insets: 1px;
     -fx-background-insets: 1px;
