@@ -14,17 +14,18 @@ public class VirtualInput {
     public void typeWord(String word) {
         Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
         c.setContents(new StringSelection(word), null);
-        Transferable t = c.getContents(this);
-//        if (t == null)
-//            return;
-//        try {
-//            jtxtfield.setText()
-//        }
-//        robot.keyPress(KeyEvent.VK_CONTROL);
-//        robot.keyPress(KeyEvent.);
-//        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
-//        robot.keyRelease(KeyEvent.VK_CONTROL);
-//        typeCharacter(KeyEvent.VK_SPACE);
-
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_SPACE);
+        robot.keyRelease(KeyEvent.VK_SPACE);
+    }
+    
+    public void typeBackspace() {
+        robot.keyPress(KeyEvent.VK_BACK_SPACE);
+        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
     }
 }

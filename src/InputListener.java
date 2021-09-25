@@ -27,10 +27,13 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         System.setOut(new PrintStream(out));
         String in = NativeKeyEvent.getKeyText(e.getKeyCode());
         if (in.length() > 1) {
-            if (in.equals("Backspace")) {
-                System.out.print("\b");
-            } else if (in.equals("Space") || in.equals("Enter")) {
-                System.out.print(" ");
+            switch (in) {
+                case "Backspace" -> System.out.print("\b");
+                case "Space", "Enter" -> System.out.print(" ");
+                case "Period" -> {
+                    virtualInput.typeBackspace();
+                    virtualInput.typeWord(".");
+                }
             }
         } else {
             try {

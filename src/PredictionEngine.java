@@ -21,17 +21,20 @@ public class PredictionEngine {
         return instance;
     }
 
-    public List<String> availableWords(String typedWord) {
+    // FIXME: messes up suggestions mid typing
+    public List<String> availableWords(String firstWord, String secondWord) {
         topAvailableWords = new ArrayList<>();
-        if (predictionMap.containsKey(typedWord)) {
-            var it = predictionMap.get(typedWord).iterator();
-            var i = 0;
+        if (predictionMap.containsKey(secondWord)) {
+            var it = predictionMap.get(secondWord).iterator();
+            int i = 0;
             while (it.hasNext() && i < 3) {
                 topAvailableWords.add(it.next().getWord());
                 i++;
             }
+        } else if (predictionMap.containsKey(firstWord)) {
+            topAvailableWords = predictionMap.get(firstWord).stream().map(WordNode::getWord).filter(word -> word.startsWith(secondWord)).toList();
         } else {
-            topAvailableWords = predictionMap.keySet().stream().filter(word -> word.startsWith(typedWord)).toList();
+            topAvailableWords = predictionMap.keySet().stream().filter(word -> word.startsWith(secondWord)).toList();
         }
         return topAvailableWords;
     }
@@ -41,8 +44,8 @@ public class PredictionEngine {
     }
 
     public void train(String firstWord, String secondWord) {
-//        firstWord = filterWord(firstWord);
-//        secondWord = filterWord(secondWord);
+        if (firstWord.equals("") || secondWord.equals(""))
+            return;
 
         if (predictionMap.containsKey(firstWord)) {
             var nodeKey = Map.of(firstWord, secondWord);
