@@ -26,33 +26,33 @@ public class UI extends Application {
         scene.getStylesheets().add("stylesheet.css");
         primaryStage.getIcons().add(new Image("icon.png"));
         setLabels();
-//        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
         primaryStage.show();
-
-        // TODO: this updates labels but hogs CPU
-        startDaemonTask(this::setLabels);
-        final Button b = new Button("Button 1");
-        pane.getChildren().add(b);
+        startRecurringTask(this::setLabels);
     }
 
     private void setLabels() {
         List<String> list = predictionEngine.availableWords();
         pane.getChildren().clear();
+
         for (int i = 0; i < 3; i++) {
-            pane.add(new Label("        ...         "), i, 0);
+            // 22 spaces is the default label
+            pane.add(new Label("                      "), i, 0);
         }
+
         for (int i = 0; i < 3 && i < list.size(); i++) {
             StringBuilder sb = new StringBuilder();
-            // hopefully this changes label size
-//            pane.getChildren().remove(i);
-            pane.add(new Label(list.get(i)), i, 0);
+            // preserve size
+            sb.append(" ".repeat(Math.max(0, 10 - list.get(i).length())));
+            sb.append(list.get(i));
+            sb.append(" ".repeat(Math.max(0, 10 - list.get(i).length())));
+            pane.add(new Label(sb.toString()), i, 0);
         }
     }
 
-    private void startDaemonTask(Runnable runnable) {
+    private void startRecurringTask(Runnable runnable) {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
