@@ -11,11 +11,19 @@ import org.jnativehook.NativeHookException;
 
 public class Main {
 
-    private static final PredictionEngine predictionEngine = PredictionEngine.getInstance();
+    private static PredictionEngine predictionEngine = PredictionEngine.getInstance();
     private static final Set<String> validWords = defineValidWords();
 
-    public static void main(String[] args) throws InterruptedException, AWTException, IOException {
-        defaultEngineTrain();
+    public static void main(String[] args) throws InterruptedException, AWTException {
+        try {
+            predictionEngine.loadState();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            System.err.println("No saved dictionary found, training...");
+            defaultEngineTrain();
+        }
+        System.err.println(predictionEngine.toString());
+
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException e) {
@@ -31,27 +39,31 @@ public class Main {
         Thread uiThread = new Thread(() -> Application.launch(UI.class));
         uiThread.start();
 
-        String lastCharacter = "";
         while (uiThread.isAlive()) {
             var sentence = inputListener.toString().split(" ");
-            // this throws out the last word. this should leave the last word as a key.
+
             if (sentence.length > 50) {
-                sentence[0] = lastCharacter + sentence[0];
-                lastCharacter = sentence[sentence.length - 1];
                 inputListener.clearOutput();
                 trainEngine(sentence);
-//                System.err.println(predictionEngine);
-
             }
 
             if (sentence.length > 1) {
+                // prediction based on last word fully typed, else use partial prediction
+                if (inputListener.toString().endsWith(" ")) {
+                    inputListener.updatePredictions(predictionEngine.nextWords(filterWord(sentence[sentence.length - 1])));
+                } else {
+                    inputListener.updatePredictions(predictionEngine.availableWords(filterWord(sentence[sentence.length - 2]), filterWord(sentence[sentence.length - 1])));
+                }
 //                System.err.println(inputListener);
 //                System.err.println("Word to predict for: " + sentence[sentence.length - 1]);
 //                System.err.println("Partial word prediction: " + predictionEngine.availableWords(filterWord(sentence[sentence.length - 2]), filterWord(sentence[sentence.length - 1])));
-                inputListener.updatePredictions(predictionEngine.availableWords(filterWord(sentence[sentence.length - 2]), filterWord(sentence[sentence.length - 1])));
             }
-
             Thread.sleep(100);
+        }
+        try {
+            predictionEngine.saveState();
+        } catch (IOException e) {
+            System.err.println("Could not save state.");
         }
         System.exit(0);
     }
@@ -76,11 +88,9 @@ public class Main {
         assert articles != null;
 
         BufferedReader br;
-        int i = 0;
         for (File file : articles) {
             try {
                 System.err.println("Feeding engine on: " + file.getName());
-                i++;
                 br = new BufferedReader(new FileReader(file));
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -96,8 +106,7 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        System.err.println(predictionEngine.toString());
-        System.err.println("" + i);
+//        System.err.println(predictionEngine.toString());
     }
 
     private static void trainEngine(String[] words) {
@@ -107,8 +116,7 @@ public class Main {
             if (validWords.contains(filterWord(w1)) && validWords.contains(filterWord(w2))) {
                 w1 = filterWord(w1);
                 w2 = filterWord(w2);
-            }
-            else if (validWords.contains(filterWord(w1)) && validWords.contains(w2)) {
+            } else if (validWords.contains(filterWord(w1)) && validWords.contains(w2)) {
                 w1 = filterWord(w1);
             } else if (validWords.contains(w1) && validWords.contains(filterWord(w2))) {
                 w2 = filterWord(w2);

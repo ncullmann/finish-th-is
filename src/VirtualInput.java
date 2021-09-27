@@ -15,17 +15,14 @@ public class VirtualInput {
         Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
         c.setContents(new StringSelection(word), null);
         robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_BACK_SPACE);
-        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
-        robot.keyPress(KeyEvent.VK_V);
-        robot.keyRelease(KeyEvent.VK_V);
+        typeCharacter('\b');
+        typeCharacter('v');
         robot.keyRelease(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_SPACE);
-        robot.keyRelease(KeyEvent.VK_SPACE);
+        typeCharacter(' ');
     }
     
-    public void typeBackspace() {
-        robot.keyPress(KeyEvent.VK_BACK_SPACE);
-        robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+    public void typeCharacter(char key) {
+        robot.keyPress(KeyEvent.getExtendedKeyCodeForChar(key));
+        robot.keyRelease(KeyEvent.getExtendedKeyCodeForChar(key));
     }
 }

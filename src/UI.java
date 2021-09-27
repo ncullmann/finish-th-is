@@ -14,6 +14,7 @@ import javafx.stage.StageStyle;
 
 
 public class UI extends Application {
+
     private GridPane pane = new GridPane();
     private PredictionEngine predictionEngine;
 
@@ -44,7 +45,7 @@ public class UI extends Application {
 
         for (int i = 0; i < 3 && i < list.size(); i++) {
             StringBuilder sb = new StringBuilder();
-            // preserve size
+            // preserve label size
             sb.append(" ".repeat(Math.max(0, 10 - list.get(i).length())));
             sb.append(list.get(i));
             sb.append(" ".repeat(Math.max(0, 10 - list.get(i).length())));

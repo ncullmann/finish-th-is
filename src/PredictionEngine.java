@@ -1,10 +1,8 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class PredictionEngine {
+
     private static PredictionEngine instance = null;
     private Map<String, Set<WordNode>> predictionMap;
     private Map<Map<String, String>, WordNode> stringToNode;
@@ -24,17 +22,22 @@ public class PredictionEngine {
     // FIXME: messes up suggestions mid typing
     public List<String> availableWords(String firstWord, String secondWord) {
         topAvailableWords = new ArrayList<>();
-        if (predictionMap.containsKey(secondWord)) {
-            var it = predictionMap.get(secondWord).iterator();
-            int i = 0;
-            while (it.hasNext() && i < 3) {
-                topAvailableWords.add(it.next().getWord());
-                i++;
-            }
-        } else if (predictionMap.containsKey(firstWord)) {
+
+        if (predictionMap.containsKey(firstWord)) {
             topAvailableWords = predictionMap.get(firstWord).stream().map(WordNode::getWord).filter(word -> word.startsWith(secondWord)).toList();
         } else {
             topAvailableWords = predictionMap.keySet().stream().filter(word -> word.startsWith(secondWord)).toList();
+        }
+        return topAvailableWords;
+    }
+
+    public List<String> nextWords(String secondWord) {
+        topAvailableWords = new ArrayList<>();
+        if (predictionMap.containsKey(secondWord)) {
+            var it = predictionMap.get(secondWord).iterator();
+            for (int i = 0; i < 3 && it.hasNext(); i++) {
+                topAvailableWords.add(it.next().getWord());
+            }
         }
         return topAvailableWords;
     }
@@ -69,6 +72,30 @@ public class PredictionEngine {
         }
     }
 
+    public void saveState() throws IOException {
+        var pmOutStream = new FileOutputStream("pm.ser");
+        var out = new ObjectOutputStream(pmOutStream);
+        out.writeObject(predictionMap);
+        pmOutStream.close();
+
+        var stnOutStream = new FileOutputStream("stn.ser");
+        out = new ObjectOutputStream(stnOutStream);
+        out.writeObject(stringToNode);
+        stnOutStream.close();
+
+    }
+
+    public void loadState() throws IOException, ClassNotFoundException {
+        var pmInStream = new FileInputStream("pm.ser");
+        var in = new ObjectInputStream(pmInStream);
+        predictionMap = (Map<String, Set<WordNode>>) in.readObject();
+        pmInStream.close();
+
+        var stnInStream = new FileInputStream("stn.ser");
+        in = new ObjectInputStream(stnInStream);
+        stringToNode = (Map<Map<String, String>, WordNode>) in.readObject();
+        stnInStream.close();
+    }
 
     public String toString() {
         return "WordMap: " + predictionMap.toString() + "\n";
