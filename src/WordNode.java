@@ -1,6 +1,8 @@
+import java.io.Serializable;
 import java.util.Objects;
 
-public class WordNode implements Comparable<WordNode> {
+public class WordNode implements Comparable<WordNode>, Serializable {
+
     private final String WORD;
     private int frequency;
 

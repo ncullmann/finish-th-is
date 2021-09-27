@@ -13,9 +13,9 @@ import org.jnativehook.mouse.NativeMouseListener;
 
 public class InputListener implements NativeKeyListener, NativeMouseListener {
 
-    OutputStream out;
-    List<String> predictedWords;
-    VirtualInput virtualInput;
+    private OutputStream out;
+    private List<String> predictedWords;
+    private VirtualInput virtualInput;
 
     public InputListener() throws AWTException {
         out = new ByteArrayOutputStream();
@@ -30,10 +30,6 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
             switch (in) {
                 case "Backspace" -> System.out.print("\b");
                 case "Space", "Enter" -> System.out.print(" ");
-                case "Period" -> {
-                    virtualInput.typeBackspace();
-                    virtualInput.typeWord(".");
-                }
             }
         } else {
             try {
@@ -45,7 +41,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
                 }
             } catch (Exception awtException) {
                 awtException.getCause();
-                System.out.println(in);
+                System.out.print(in);
             }
         }
         // debug
