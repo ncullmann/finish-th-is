@@ -12,12 +12,13 @@ public class VirtualInput {
     }
 
     public void typeWord(String word) {
-        Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
-        c.setContents(new StringSelection(word), null);
         robot.keyPress(KeyEvent.VK_CONTROL);
         typeCharacter('\b');
-        typeCharacter('v');
         robot.keyRelease(KeyEvent.VK_CONTROL);
+
+        for (int i = 0; i < word.length(); i++) {
+            typeCharacter(word.charAt(i));
+        }
         typeCharacter(' ');
     }
     
