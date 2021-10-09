@@ -1,17 +1,18 @@
-import java.awt.AWTException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import Engine.EngineSuggestions;
-import Engine.EngineTrainer;
-import Interaction.InputListener;
-import Interaction.UI;
+import engine.EngineSuggestions;
+import engine.EngineTrainer;
+import interaction.InputListener;
+import interaction.UI;
 import javafx.application.Application;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
+import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Main {
-    public static void main(String[] args) throws InterruptedException, AWTException, NativeHookException {
+
+    public static void main(String[] args) throws InterruptedException, AWTException {
         var trainer = new EngineTrainer();
 
         try {
@@ -19,7 +20,7 @@ public class Main {
         } catch (NativeHookException e) {
             e.printStackTrace();
             System.err.println("Could not register hook, exiting...");
-//            System.exit(1);
+            System.exit(1);
         }
 
         var suggestions = new EngineSuggestions();
@@ -35,7 +36,7 @@ public class Main {
         while (uiThread.isAlive()) {
             var sentence = inputListener.toString().split(" ");
             var len = sentence.length;
-            if (len > 50) {
+            if (len > 5) {
                 inputListener.clearOutput();
                 trainer.trainEngine(sentence);
             }
