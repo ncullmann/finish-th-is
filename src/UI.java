@@ -27,6 +27,7 @@ public class UI extends Application {
         scene.getStylesheets().add("stylesheet.css");
         primaryStage.getIcons().add(new Image("icon.png"));
         setLabels();
+        pane.add(new Label("      Loading...      "), 1, 0);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
@@ -40,7 +41,7 @@ public class UI extends Application {
 
         for (int i = 0; i < 3; i++) {
             // 22 spaces is the default label
-            pane.add(new Label("                      "), i, 0);
+            pane.add(new Label("           ———           "), i, 0);
         }
 
         for (int i = 0; i < 3 && i < list.size(); i++) {

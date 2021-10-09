@@ -16,11 +16,13 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
     private OutputStream out;
     private List<String> predictedWords;
     private VirtualInput virtualInput;
+    private boolean modifierPressed;
 
     public InputListener() throws AWTException {
         out = new ByteArrayOutputStream();
         predictedWords = new ArrayList<>();
         virtualInput = new VirtualInput();
+        modifierPressed = false;
     }
 
     public void nativeKeyPressed(NativeKeyEvent e) {
@@ -30,15 +32,19 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
             switch (in) {
                 case "Backspace" -> System.out.print("\b");
                 case "Space", "Enter" -> System.out.print(" ");
+                case "Back Quote" -> modifierPressed = true;
             }
         } else {
             try {
-                switch (in) {
-                    case "1" -> virtualInput.typeWord(predictedWords.get(0));
-                    case "2" -> virtualInput.typeWord(predictedWords.get(1));
-                    case "3" -> virtualInput.typeWord(predictedWords.get(2));
-                    default -> System.out.print(in);
+                if (!modifierPressed) {
+                    switch (in) {
+                        case "1" -> virtualInput.typeWord(predictedWords.get(0));
+                        case "2" -> virtualInput.typeWord(predictedWords.get(1));
+                        case "3" -> virtualInput.typeWord(predictedWords.get(2));
+                    }
                 }
+                System.out.print(in);
+                modifierPressed = false;
             } catch (Exception awtException) {
                 awtException.getCause();
                 System.out.print(in);

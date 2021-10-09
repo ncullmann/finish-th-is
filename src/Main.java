@@ -90,7 +90,7 @@ public class Main {
         BufferedReader br;
         for (File file : articles) {
             try {
-                System.err.println("Feeding engine on: " + file.getName());
+                System.err.println("Training engine on: " + file.getName());
                 br = new BufferedReader(new FileReader(file));
                 String line;
                 while ((line = br.readLine()) != null) {
