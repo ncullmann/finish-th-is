@@ -1,24 +1,23 @@
-package Interaction;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
+package interaction;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 import org.jnativehook.mouse.NativeMouseEvent;
 import org.jnativehook.mouse.NativeMouseListener;
 
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class InputListener implements NativeKeyListener, NativeMouseListener {
 
     private OutputStream out;
     private List<String> predictedWords;
-    private VirtualInput virtualInput;
-    private boolean modifierHeld;
+    private final VirtualInput virtualInput;
+    private final boolean modifierHeld;
 
     public InputListener() throws AWTException {
         out = new ByteArrayOutputStream();

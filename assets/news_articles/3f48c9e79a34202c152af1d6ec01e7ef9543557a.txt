@@ -32,7 +32,7 @@ Few anticipated the app store meme spreading to cars , for instance , but Atlant
 
 For safety , some of these apps would use an audio-only interface for drivers , or be usable only by passengers or when parked , notes Kevin Link , a vice president with the company : `` Automotive applications must consider driver distraction , network security , and reliability within the vehicle . ''
 
-But the possibilities are tantalizing and include taking pictures of a thief in action , playing catch-up audio clips of TV shows , deciphering that obscure Check Engine light , and remotely starting the engine or resetting the car alarm .
+But the possibilities are tantalizing and include taking pictures of a thief in action , playing catch-up audio clips of TV shows , deciphering that obscure Check engine light , and remotely starting the engine or resetting the car alarm .
 
 Such apps could be accessed through home computers or smart phones , as well as from within the vehicle itself .
 

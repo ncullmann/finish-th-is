@@ -1,13 +1,11 @@
-package Interaction;
+package interaction;
 
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.KeyEvent;
 
 public class VirtualInput {
-    private Robot robot;
+
+    private final Robot robot;
 
     public VirtualInput() throws AWTException {
         robot = new Robot();
@@ -23,7 +21,7 @@ public class VirtualInput {
         }
         typeCharacter(' ');
     }
-    
+
     public void typeCharacter(char key) {
         robot.keyPress(KeyEvent.getExtendedKeyCodeForChar(key));
         robot.keyRelease(KeyEvent.getExtendedKeyCodeForChar(key));

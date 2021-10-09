@@ -1,15 +1,13 @@
-package Engine;
+package engine;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EngineSuggestions {
-    private PredictionEngine predictionEngine;
-    private List<String> availableWords;
+
+    private final PredictionEngine predictionEngine;
 
     public EngineSuggestions() {
         predictionEngine = PredictionEngine.getInstance();
-        availableWords = new ArrayList<>();
     }
 
     public List<String> getAvailableWords(String firstWord, String secondWord) {
