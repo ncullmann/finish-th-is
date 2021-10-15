@@ -17,6 +17,7 @@ public class UI extends Application {
 
     private final GridPane pane;
     private final EngineSuggestions suggestions;
+    private static Stage primaryStage;
 
     public UI() {
         pane = new GridPane();
@@ -25,17 +26,23 @@ public class UI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        UI.primaryStage = primaryStage;
         primaryStage.setAlwaysOnTop(true);
         primaryStage.setTitle("Finish Th-(is)");
         var scene = new Scene(pane);
-        scene.getStylesheets().add("file:src/Interaction/UIStylesheet.css");
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.getIcons().add(new Image("file:assets/icon.png"));
         setLabels();
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.setResizable(false);
         primaryStage.show();
-        startRecurringTask(this::setLabels);
+        // sync labels with input
+        startDaemon(this::setLabels);
+    }
+
+    public static boolean isMinimized() {
+        return primaryStage.isIconified();
     }
 
     private void setLabels() {
@@ -56,7 +63,7 @@ public class UI extends Application {
         }
     }
 
-    private void startRecurringTask(Runnable runnable) {
+    private void startDaemon(Runnable runnable) {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
