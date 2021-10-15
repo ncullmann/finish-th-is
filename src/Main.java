@@ -36,7 +36,9 @@ public class Main {
         while (uiThread.isAlive()) {
             var sentence = inputListener.toString().split(" ");
             var len = sentence.length;
-            if (len > 5) {
+
+            // retrain every 50 words
+            if (len > 50) {
                 inputListener.clearOutput();
                 trainer.trainEngine(sentence);
             }
@@ -51,6 +53,7 @@ public class Main {
             }
             Thread.sleep(100);
         }
+        // save user dictionary
         trainer.shutdown();
         System.exit(0);
     }

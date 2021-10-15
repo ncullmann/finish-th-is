@@ -3,24 +3,37 @@ package engine;
 import java.io.*;
 import java.util.*;
 
-public class PredictionEngine {
+class PredictionEngine {
 
-    private static PredictionEngine instance = null;
+    // uses the user's last typed word and sorts words that come after by frequency
     private Map<String, Set<WordNode>> predictionMap;
+    // map the hash of both strings to a unique WordNode to be put in the firstWord's Set
+    // that way, we may pull the WordNode out of the predictionMap easily.
     private Map<Integer, WordNode> stringToNode;
+    // sorted list by probability of next word
     private List<String> topAvailableWords;
 
-    public PredictionEngine() {
+    private PredictionEngine() {
         predictionMap = new HashMap<>();
         stringToNode = new HashMap<>();
         topAvailableWords = new ArrayList<>();
     }
 
-    static PredictionEngine getInstance() {
-        if (instance == null) instance = new PredictionEngine();
-        return instance;
+    private static class Holder {
+        private static final PredictionEngine INSTANCE = new PredictionEngine();
     }
 
+    static PredictionEngine getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /* we can visualize the predictionMap like this:
+     *        dog -> {[barks: 10], [eats: 6], ...}
+     *         it -> {[is: 75], [was: 53], [has: 24], ...}
+     *
+     * and stringToNode:
+     *   dogbarks.hashCode() -> [barks: 10]
+     */
     void train(String firstWord, String secondWord) {
         if (firstWord.equals("") || secondWord.equals(""))
             return;
@@ -46,6 +59,7 @@ public class PredictionEngine {
     }
 
     void saveState() throws IOException {
+        // save predictionMap and stringToNode as user dictionaries
         var pmOutStream = new FileOutputStream("assets/pm.ser");
         var out = new ObjectOutputStream(pmOutStream);
         out.writeObject(predictionMap);
@@ -69,13 +83,20 @@ public class PredictionEngine {
         stnInStream.close();
     }
 
+    // for partially typed words
     List<String> getAvailableWords(String firstWord, String secondWord) {
         topAvailableWords = new ArrayList<>();
 
+        // get the word from the sorted set, if available
         if (predictionMap.containsKey(firstWord)) {
-            topAvailableWords = predictionMap.get(firstWord).stream().map(WordNode::getWord).filter(word -> word.startsWith(secondWord)).toList();
+            topAvailableWords = predictionMap.get(firstWord).stream()
+                                .map(WordNode::getWord)
+                                .filter(word -> word.startsWith(secondWord))
+                                .toList().subList(0, 3);
         } else {
-            topAvailableWords = predictionMap.keySet().stream().filter(word -> word.startsWith(secondWord)).toList();
+            topAvailableWords = predictionMap.keySet().stream()
+                                .filter(word -> word.startsWith(secondWord))
+                                .toList().subList(0, 3);
         }
         return topAvailableWords;
     }
@@ -84,14 +105,12 @@ public class PredictionEngine {
         return topAvailableWords;
     }
 
+    // for completely typed words
     List<String> getNextWords(String secondWord) {
-        topAvailableWords = new ArrayList<>();
-        if (predictionMap.containsKey(secondWord)) {
-            var it = predictionMap.get(secondWord).iterator();
-            for (int i = 0; i < 3 && it.hasNext(); i++) {
-                topAvailableWords.add(it.next().getWord());
-            }
-        }
-        return topAvailableWords;
+        return predictionMap.containsKey(secondWord) ?
+                predictionMap.get(secondWord).stream()
+                             .map(WordNode::getWord)
+                             .toList().subList(0, 3)
+                : new ArrayList<>();
     }
 }

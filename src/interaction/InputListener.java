@@ -17,16 +17,18 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
     private OutputStream out;
     private List<String> predictedWords;
     private final VirtualInput virtualInput;
-    private final boolean modifierHeld;
 
     public InputListener() throws AWTException {
         out = new ByteArrayOutputStream();
         predictedWords = new ArrayList<>();
         virtualInput = new VirtualInput();
-        modifierHeld = false;
     }
 
     public void nativeKeyPressed(NativeKeyEvent e) {
+        // stop collecting keystrokes
+        if (UI.isMinimized()) return;
+
+        // redirect user input to sysout
         System.setOut(new PrintStream(out));
         String in = NativeKeyEvent.getKeyText(e.getKeyCode());
         if (in.length() > 1) {
@@ -37,6 +39,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         } else {
             try {
                 switch (in) {
+                    // type predictions displayed from the UI
                     case "1" -> virtualInput.typeWord(predictedWords.get(0));
                     case "2" -> virtualInput.typeWord(predictedWords.get(1));
                     case "3" -> virtualInput.typeWord(predictedWords.get(2));

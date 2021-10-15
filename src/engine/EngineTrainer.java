@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class EngineTrainer {
 
+    // English words with correct spelling
     private final Set<String> validWords;
     private final PredictionEngine predictionEngine;
 
@@ -16,6 +17,7 @@ public class EngineTrainer {
         predictionEngine = PredictionEngine.getInstance();
         validWords = defineValidWords();
         try {
+            // load user dictionary, if available
             predictionEngine.loadState();
         } catch (ClassNotFoundException | IOException e) {
             defaultEngineTrain();
@@ -27,6 +29,7 @@ public class EngineTrainer {
             String w1 = words[i], w2 = words[i + 1];
 
             if (validWords.contains(w1) && validWords.contains(w2)) {
+                // leave words capitalized/punctuated if valid
             } else if (validWords.contains(filterWord(w1)) && validWords.contains(w2)) {
                 w1 = filterWord(w1);
             } else if (validWords.contains(w1) && validWords.contains(filterWord(w2))) {
@@ -38,7 +41,6 @@ public class EngineTrainer {
                 w1 = "";
                 w2 = "";
             }
-
             predictionEngine.train(w1, w2);
         }
     }
@@ -58,10 +60,10 @@ public class EngineTrainer {
         File[] articles = folder.listFiles();
         assert articles != null;
 
+        // trains on thousands of news articles
         BufferedReader br;
         for (File file : articles) {
             try {
-                System.err.println("Training engine on: " + file.getName());
                 br = new BufferedReader(new FileReader(file));
                 String line;
                 while ((line = br.readLine()) != null) {
