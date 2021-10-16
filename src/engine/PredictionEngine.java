@@ -32,7 +32,7 @@ class PredictionEngine {
      *         it -> {[is: 75], [was: 53], [has: 24], ...}
      *
      * and stringToNode:
-     *   dogbarks.hashCode() -> [barks: 10]
+     *        dogbarks.hashCode() -> [barks: 10]
      */
     void train(String firstWord, String secondWord) {
         if (firstWord.equals("") || secondWord.equals(""))
@@ -92,11 +92,11 @@ class PredictionEngine {
             topAvailableWords = predictionMap.get(firstWord).stream()
                                 .map(WordNode::getWord)
                                 .filter(word -> word.startsWith(secondWord))
-                                .toList().subList(0, 3);
+                                .toList();
         } else {
             topAvailableWords = predictionMap.keySet().stream()
                                 .filter(word -> word.startsWith(secondWord))
-                                .toList().subList(0, 3);
+                                .toList();
         }
         return topAvailableWords;
     }
@@ -110,7 +110,7 @@ class PredictionEngine {
         return predictionMap.containsKey(secondWord) ?
                 predictionMap.get(secondWord).stream()
                              .map(WordNode::getWord)
-                             .toList().subList(0, 3)
+                             .toList()
                 : new ArrayList<>();
     }
 }
