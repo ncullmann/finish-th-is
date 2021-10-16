@@ -18,10 +18,12 @@ public class UI extends Application {
     private final GridPane pane;
     private final EngineSuggestions suggestions;
     private static Stage primaryStage;
+    private static int LABEL_COUNT;
 
     public UI() {
         pane = new GridPane();
         suggestions = new EngineSuggestions();
+        LABEL_COUNT = suggestions.getNumberOfSuggestions();
     }
 
     @Override
@@ -49,12 +51,12 @@ public class UI extends Application {
         List<String> list = suggestions.getAvailableWords();
         pane.getChildren().clear();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < LABEL_COUNT; i++) {
             // default label
             pane.add(new Label("           ———           "), i, 0);
         }
 
-        for (int i = 0; i < 3 && i < list.size(); i++) {
+        for (int i = 0; i < LABEL_COUNT && i < list.size(); i++) {
             // preserve label size
             String s = " ".repeat(Math.max(0, 10 - list.get(i).length())) +
                     list.get(i) +
