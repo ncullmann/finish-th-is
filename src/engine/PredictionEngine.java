@@ -12,6 +12,7 @@ class PredictionEngine {
     private Map<Integer, WordNode> stringToNode;
     // sorted list by probability of next word
     private List<String> topAvailableWords;
+    static final int SUGGESTION_COUNT = 3;
 
     private PredictionEngine() {
         predictionMap = new HashMap<>();
@@ -85,19 +86,20 @@ class PredictionEngine {
 
     // for partially typed words
     List<String> getAvailableWords(String firstWord, String secondWord) {
-        topAvailableWords = new ArrayList<>();
-
-        // get the word from the sorted set, if available
-        if (predictionMap.containsKey(firstWord)) {
-            topAvailableWords = predictionMap.get(firstWord).stream()
-                                .map(WordNode::getWord)
-                                .filter(word -> word.startsWith(secondWord))
-                                .toList();
-        } else {
-            topAvailableWords = predictionMap.keySet().stream()
-                                .filter(word -> word.startsWith(secondWord))
-                                .toList();
-        }
+        topAvailableWords = predictionMap.containsKey(firstWord) ?
+                // get it from the set, if available
+                predictionMap.get(firstWord)
+                             .stream()
+                             .map(WordNode::getWord)
+                             .filter(word -> word.startsWith(secondWord))
+                             .limit(SUGGESTION_COUNT)
+                             .toList()
+                // or just pull words that start with the current letters typed
+              : predictionMap.keySet()
+                             .stream()
+                             .filter(word -> word.startsWith(secondWord))
+                             .limit(SUGGESTION_COUNT)
+                             .toList();
         return topAvailableWords;
     }
 
@@ -107,10 +109,12 @@ class PredictionEngine {
 
     // for completely typed words
     List<String> getNextWords(String secondWord) {
-        return predictionMap.containsKey(secondWord) ?
+        topAvailableWords = predictionMap.containsKey(secondWord) ?
                 predictionMap.get(secondWord).stream()
+                             .limit(SUGGESTION_COUNT)
                              .map(WordNode::getWord)
                              .toList()
                 : new ArrayList<>();
+        return topAvailableWords;
     }
 }

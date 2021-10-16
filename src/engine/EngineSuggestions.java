@@ -1,10 +1,12 @@
 package engine;
 
+import java.security.PublicKey;
 import java.util.List;
 
 public class EngineSuggestions {
 
     private final PredictionEngine predictionEngine;
+
 
     public EngineSuggestions() {
         predictionEngine = PredictionEngine.getInstance();
@@ -20,6 +22,10 @@ public class EngineSuggestions {
 
     public List<String> getNextWords(String secondWord) {
         return predictionEngine.getNextWords(filterWord(secondWord));
+    }
+
+    public int getNumberOfSuggestions() {
+        return PredictionEngine.SUGGESTION_COUNT;
     }
 
     private String filterWord(String word) {
