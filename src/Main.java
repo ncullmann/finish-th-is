@@ -37,8 +37,8 @@ public class Main {
             var sentence = inputListener.toString().split(" ");
             var len = sentence.length;
 
-            // train every 50 words
-            if (len > 50) {
+            // train every 10 words
+            if (len > 10) {
                 inputListener.clearOutput();
                 trainer.trainEngine(sentence);
             }
