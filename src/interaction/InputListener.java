@@ -35,6 +35,10 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
             switch (in) {
                 case "Backspace" -> System.out.print("\b");
                 case "Space", "Enter" -> System.out.print(" ");
+//                case "Comma", "Period" -> {
+//                        virtualInput.typeCharacter('\b');
+//                        virtualInput.typeCharacter(in.equals("Comma") ? ',' : '.');
+//                }
             }
         } else {
             try {
