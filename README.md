@@ -7,7 +7,7 @@ To run, [download the release](https://github.com/ncullmann/Finish-Th-is/release
 This project was built using the [Azul Zulu OpenJDK with JavaFX](https://www.azul.com/downloads/?package=jdk-fx). 
 However, this project builds with other recent JDKs (16+) with both dependencies met. On the first compilation, the pm.ser and stn.ser files are generated from the training set and will not be regenerated unless deleted. The binaries come with both of these for the sake of convenience.
 ### Dependencies
+[JNativeHook](https://github.com/kwhat/jnativehook) - version 2.1.0
 [JavaFX](https://openjfx.io/) - only required for alternative JDKs<br>
-[jnativehook](https://github.com/kwhat/jnativehook) - version 2.1.0
 # License
 GPLv2
