@@ -3,6 +3,7 @@ package interaction;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+
 public class VirtualInput {
 
     private final Robot robot;

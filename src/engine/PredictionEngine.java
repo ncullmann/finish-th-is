@@ -12,7 +12,7 @@ class PredictionEngine {
     private Map<Integer, WordNode> stringToNode;
     // sorted list by probability of next word
     private List<String> topAvailableWords;
-    static final int SUGGESTION_COUNT = 3;
+    private static final int SUGGESTION_COUNT = 3;
 
     private PredictionEngine() {
         predictionMap = new HashMap<>();
@@ -111,10 +111,14 @@ class PredictionEngine {
     List<String> getNextWords(String secondWord) {
         topAvailableWords = predictionMap.containsKey(secondWord) ?
                 predictionMap.get(secondWord).stream()
-                             .limit(SUGGESTION_COUNT)
                              .map(WordNode::getWord)
+                             .limit(SUGGESTION_COUNT)
                              .toList()
                 : new ArrayList<>();
         return topAvailableWords;
+    }
+
+    static int getSuggestionCount() {
+        return SUGGESTION_COUNT;
     }
 }
