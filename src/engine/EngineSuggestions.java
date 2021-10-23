@@ -1,6 +1,5 @@
 package engine;
 
-import java.security.PublicKey;
 import java.util.List;
 
 public class EngineSuggestions {
@@ -25,7 +24,7 @@ public class EngineSuggestions {
     }
 
     public int getNumberOfSuggestions() {
-        return PredictionEngine.SUGGESTION_COUNT;
+        return PredictionEngine.getSuggestionCount();
     }
 
     private String filterWord(String word) {

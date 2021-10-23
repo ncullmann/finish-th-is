@@ -18,12 +18,11 @@ public class UI extends Application {
     private final GridPane pane;
     private final EngineSuggestions suggestions;
     private static Stage primaryStage;
-    private static int LABEL_COUNT;
+    private static final int LABEL_COUNT = new EngineSuggestions().getNumberOfSuggestions();
 
     public UI() {
         pane = new GridPane();
         suggestions = new EngineSuggestions();
-        LABEL_COUNT = suggestions.getNumberOfSuggestions();
     }
 
     @Override
