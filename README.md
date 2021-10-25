@@ -2,10 +2,10 @@
 Finish Th-(is) is an application that brings the convenience of a mobile keyboard's predictive text to the desktop system-wide. It works the same way you would expect your phone's keyboard to -- often finishing sentences for you with perfect spelling. To use, start typing and press 1, 2, or 3 on your keyboard to fill in a word. When minimized, the application suspends and is not capturing input until it is in view again.
 # Demo
 https://user-images.githubusercontent.com/56172266/138538196-30966dd9-0e25-4d38-a8cd-1db787de3d22.mp4
-# Binaries
-[Download the latest release](https://github.com/ncullmann/Finish-Th-is/releases) for your platform.<br>Java 17+ required.
-### Unix-like
-Install the appropriate [Azul Zulu OpenJDK with JavaFX for Linux](https://www.azul.com/downloads/?os=linux&package=jdk-fx) depending upon your distribution, or [Azul Zulu OpenJDK with JavaFX for macOS](https://www.azul.com/downloads/?os=macos&package=jdk-fx). Extract the tarball `tar -xzvf Finish-Th-is.jar`, then run `java -jar Finish-Th-is.jar` in a terminal.<br> Alternatively, `<Zulu JavaFX JDK>/bin/java -jar Finish-Th-is.jar`
+# Releases
+[Download the latest release](https://github.com/ncullmann/Finish-Th-is/releases) for your platform.
+### Linux
+Install the appropriate [Azul Zulu OpenJDK with JavaFX for Linux](https://www.azul.com/downloads/?os=linux&package=jdk-fx) depending upon your distribution. Extract the tarball<br>`tar -xzvf Finish-Th-is.jar`, then run `java -jar Finish-Th-is.jar` in a terminal.<br> Alternatively, `<Zulu JavaFX JDK>/bin/java -jar Finish-Th-is.jar`
 ### Windows
 Install the [Azul Zulu OpenJDK with JavaFX for Windows](https://cdn.azul.com/zulu/bin/zulu17.28.13-ca-fx-jdk17.0.0-win_x64.msi), extract the zip, then double-click the jar.
 # Building
