@@ -5,7 +5,7 @@ https://user-images.githubusercontent.com/56172266/138538196-30966dd9-0e25-4d38-
 # Releases
 [Download the latest release](https://github.com/ncullmann/Finish-Th-is/releases) for your platform.
 ### Linux
-Install the appropriate [Azul Zulu OpenJDK with JavaFX for Linux](https://www.azul.com/downloads/?os=linux&package=jdk-fx) depending upon your distribution. Extract the tarball<br>`tar -xzvf Finish-Th-is.jar`, then run `java -jar Finish-Th-is.jar` in a terminal.<br> Alternatively, `<Zulu JavaFX JDK>/bin/java -jar Finish-Th-is.jar`
+Install the appropriate [Azul Zulu OpenJDK with JavaFX for Linux](https://www.azul.com/downloads/?os=linux&package=jdk-fx) depending upon your distribution. Extract the tarball `tar -xzvf Finish-Th-is.jar`, then run `java -jar Finish-Th-is.jar` in a terminal.<br> Alternatively, `<Zulu JavaFX JDK>/bin/java -jar Finish-Th-is.jar`
 ### Windows
 Install the [Azul Zulu OpenJDK with JavaFX for Windows](https://cdn.azul.com/zulu/bin/zulu17.28.13-ca-fx-jdk17.0.0-win_x64.msi), extract the zip, then double-click the jar.
 # Building
